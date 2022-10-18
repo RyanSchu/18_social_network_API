@@ -27,4 +27,4 @@ User.find({}).exec((err, collection) => {
   return console.log('Already populated');
 });
 
-module.exports = Yser;
+module.exports = User;
