@@ -1,11 +1,13 @@
-const mongoose = require('mongoose');
+const {Schema, model} = require('mongoose');
 
-const thoughtSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  lastAccessed: { type: Date, default: Date.now },
+const thoughtSchema = new Schema({
+  thoughtText:{type:String,required:true,minLength:1,maxLength:280},
+  createdAt:{type:Date,default:Date.now},
+  username:{type:String,require:true},
+  reactions:{}
 });
 
-const Thought = mongoose.model('Thought', thoughtSchema);
+const Thought = model('Thought', thoughtSchema);
 
 const handleError = (err) => console.error(err);
 

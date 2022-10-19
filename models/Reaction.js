@@ -1,11 +1,11 @@
-const mongoose = require('mongoose');
+const {Schema, model} = require('mongoose');
 
-const reactSchema = new mongoose.Schema({
+const reactionSchema = new Schema({
   name: { type: String, required: true },
   lastAccessed: { type: Date, default: Date.now },
 });
 
-const React = mongoose.model('React', reactSchema);
+const React = model('React', reactionSchema);
 
 const handleError = (err) => console.error(err);
 

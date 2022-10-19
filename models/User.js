@@ -1,30 +1,38 @@
-const mongoose = require('mongoose');
+const {Schema, model} = require('mongoose');
 
-const userSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  lastAccessed: { type: Date, default: Date.now },
+const userSchema = new Schema({
+    username:{
+        type:String,
+        required: true, 
+        unique:true, 
+        trim: true
+    },
+    email:{
+        type:String, 
+        required: true,
+        unique:true, 
+        validate:/^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/
+    },
+    thoughts:[
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'thoughts',
+      },
+    ],
+    friends: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'users',
+      },
+    ]
+},
+{
+  toJSON: {
+    virtuals: true,
+  },
+  id: false,
 });
 
-const User = mongoose.model('User', userSchema);
-
-const handleError = (err) => console.error(err);
-
-// Will add data only if collection is empty to prevent duplicates
-// Note that two documents can have the same name value
-User.find({}).exec((err, collection) => {
-  if (err) {
-    return handleError(err);
-  }
-  if (collection.length === 0) {
-    return User.insertMany(
-      [
-
-      ],
-      (insertError) =>
-        insertError ? handleError(insertError) : console.log('Inserted')
-    );
-  }
-  return console.log('Already populated');
-});
+const User = model('User', userSchema);
 
 module.exports = User;
