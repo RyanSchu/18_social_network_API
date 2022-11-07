@@ -5,11 +5,11 @@ const {
   getPosts,
   createPost,
   updatePost,
-  createReaction
+  deletePost
 } = require('../../controllers/thoughtControllers');
 
 router.route('/').get(getPosts).post(createPost);
 
-router.route('/:postId').get(getSinglePost).put(updatePost);
+router.route('/:postId').get(getSinglePost).put(updatePost).delete(deletePost);
 
 module.exports = router;

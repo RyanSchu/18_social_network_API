@@ -17,11 +17,12 @@ module.exports = {
   },
   // create a new post
   createPost(req, res) {
+    console.log(req.body)
     Thought.create(req.body)
       .then((post) => {
         return User.findOneAndUpdate(
           { username: req.body.username },
-          { $addToSet: { thoughts: req.body } },
+          { $addToSet: { thoughts: post._id } },
           { new: true }
         );
       })
@@ -41,7 +42,19 @@ module.exports = {
   updatePost(req,res) {
     Thought.findOneAndUpdate(
       {_id: req.params.postId},
-      { $set: req.body }
+      { $set: req.body },
+      {new:true}
+    )
+    .then((thought) =>
+      !thought
+        ? res.status(404).json({ message: 'No thought with that ID' })
+        : res.json(thought)
+    )
+    .catch((err) => res.status(500).json(err));
+  },
+  deletePost(req,res) {
+    Thought.findOneAndDelete(
+      {_id: req.params.postId}
     )
     .then((thought) =>
       !thought
