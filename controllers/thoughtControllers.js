@@ -38,4 +38,16 @@ module.exports = {
       });
   },
   // update a thought
+  updatePost(req,res) {
+    Thought.findOneAndUpdate(
+      {_id: req.params.postId},
+      { $set: req.body }
+    )
+    .then((thought) =>
+      !thought
+        ? res.status(404).json({ message: 'No thought with that ID' })
+        : res.json(thought)
+    )
+    .catch((err) => res.status(500).json(err));
+  }
 };
