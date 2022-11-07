@@ -1,13 +1,13 @@
-const { Post, User } = require('../models');
+const { User, Thought } = require('../models');
 
 module.exports = {
   getPosts(req, res) {
-    Post.find()
+    Thought.find()
       .then((posts) => res.json(posts))
       .catch((err) => res.status(500).json(err));
   },
   getSinglePost(req, res) {
-    Post.findOne({ _id: req.params.postId })
+    Thought.findOne({ _id: req.params.postId })
       .then((post) =>
         !post
           ? res.status(404).json({ message: 'No post with that ID' })
@@ -17,11 +17,11 @@ module.exports = {
   },
   // create a new post
   createPost(req, res) {
-    Post.create(req.body)
+    Thought.create(req.body)
       .then((post) => {
         return User.findOneAndUpdate(
-          { _id: req.body.userId },
-          { $addToSet: { posts: post._id } },
+          { username: req.body.username },
+          { $addToSet: { thoughts: post._id } },
           { new: true }
         );
       })
@@ -37,4 +37,5 @@ module.exports = {
         res.status(500).json(err);
       });
   },
+  // update a thought
 };

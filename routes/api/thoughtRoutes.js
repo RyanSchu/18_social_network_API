@@ -2,8 +2,8 @@ const router = require('express').Router();
 const {
   getSinglePost,
   getPosts,
-  createPost,
-} = require('../../controllers/postController');
+  createPost
+} = require('../../controllers/thoughtControllers');
 
 router.route('/').get(getPosts).post(createPost);
 
