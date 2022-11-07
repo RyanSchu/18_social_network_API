@@ -21,7 +21,7 @@ module.exports = {
       .then((post) => {
         return User.findOneAndUpdate(
           { username: req.body.username },
-          { $addToSet: { thoughts: post._id } },
+          { $addToSet: { thoughts: req.body } },
           { new: true }
         );
       })
